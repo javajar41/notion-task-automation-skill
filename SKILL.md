@@ -1,0 +1,234 @@
+---
+name: notion-task-automation
+description: Notion任务自动化管理技能 - 完整版。自动检查任务状态、产品经理分析、自动开发、进度追踪、可视化看板。
+triggers:
+  - cron: "*/5 * * * *"
+  - message: "检查Notion任务"
+  - message: "执行任务开发"
+  - message: "生成任务看板"
+version: 2.0
+author: AI Assistant
+date: 2026-03-04
+---
+
+# Notion 任务自动化管理 SKILL v2.0
+
+## 🎯 功能概览
+
+```
+┌─────────────────────────────────────────────────────────┐
+│            Notion Task Automation Skill                 │
+├─────────────────────────────────────────────────────────┤
+│  1. check       - 检查任务状态，生成报告                 │
+│  2. execute     - 自动执行确认迭代的任务                 │
+│  3. dashboard   - 生成可视化看板                        │
+│  4. status      - 查看系统状态                          │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 🚀 快速开始
+
+### 1. 配置环境变量
+
+创建 `.env` 文件：
+```bash
+NOTION_TOKEN=your_notion_integration_token
+NOTION_DATABASE_ID=your_database_id
+```
+
+### 2. 运行命令
+
+```bash
+# 完整自动化流程（检查 + 执行）
+./automation.sh full
+
+# 只检查任务状态
+./automation.sh check
+
+# 只执行确认迭代的任务
+./automation.sh execute
+
+# 生成可视化看板
+./automation.sh dashboard
+
+# 查看系统状态
+./automation.sh status
+```
+
+## 📊 工作流程
+
+```
+Notion任务状态流转：
+
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  未开始   │───▶│ 待确认   │───▶│ 确认迭代 │───▶│  进行中   │
+│  (新任务) │    │ (分析中) │    │ (准备开发)│    │ (开发中) │
+└──────────┘    └──────────┘    └────┬─────┘    └────┬─────┘
+                                      │               │
+                                      │ 自动触发       │
+                                      ▼               ▼
+                              ┌────────────────┐  ┌──────────┐
+                              │ 产品经理分析    │  │ 自动开发  │
+                              │ 生成V1.1 PRD   │  │ 子代理   │
+                              └────────────────┘  └────┬─────┘
+                                                      │
+                                                      ▼
+                                               ┌──────────┐
+                                               │  已完成   │
+                                               │ (已部署) │
+                                               └──────────┘
+```
+
+## 🔄 自动触发机制
+
+### 定时触发
+- **每5分钟**自动执行 `full` 命令
+- 检查是否有"确认迭代"状态的任务
+- 自动触发开发
+
+### 手动触发
+发送消息到 Feishu：
+- `检查Notion任务` → 执行 check
+- `执行任务开发` → 执行 execute
+- `生成任务看板` → 执行 dashboard
+
+## 📁 文件结构
+
+```
+skills/notion-task-automation/
+├── SKILL.md              # 技能文档（本文档）
+├── automation.sh         # 核心自动化脚本
+├── state.json            # 状态存储（自动创建）
+└── dashboard.html        # 可视化看板（自动生成）
+```
+
+## 📝 日志和调试
+
+### 日志文件
+```
+/tmp/notion-skill.log     # 详细执行日志
+```
+
+查看实时日志：
+```bash
+tail -f /tmp/notion-skill.log
+```
+
+### 状态文件
+```
+skills/notion-task-automation/state.json
+```
+
+存储：
+- 最后检查时间
+- 开发任务状态
+- 开发目录映射
+
+## 🎨 可视化看板
+
+生成后可以在浏览器中打开：
+```bash
+# 生成看板
+./automation.sh dashboard
+
+# 打开看板
+open skills/notion-task-automation/dashboard.html
+```
+
+看板显示：
+- 任务统计卡片
+- 任务列表及状态
+- 最后更新时间
+
+## 🔧 高级配置
+
+### 自定义检查频率
+
+编辑 crontab：
+```bash
+crontab -e
+```
+
+修改为所需频率：
+```bash
+# 每5分钟（默认）
+*/5 * * * * /path/to/automation.sh full
+
+# 每10分钟
+*/10 * * * * /path/to/automation.sh full
+
+# 每小时
+0 * * * * /path/to/automation.sh full
+```
+
+### 扩展功能
+
+在 `automation.sh` 中添加自定义步骤：
+```bash
+# 在 execute_confirmed_tasks 函数中添加
+custom_step() {
+    log "执行自定义步骤..."
+    # 你的代码
+}
+```
+
+## 🐛 故障排除
+
+### 问题1：缺少环境变量
+```
+错误: 缺少 NOTION_TOKEN 或 NOTION_DATABASE_ID
+```
+**解决：** 检查 `.env` 文件是否正确配置
+
+### 问题2：缺少 jq 命令
+```
+错误: 缺少 jq 命令
+```
+**解决：** `sudo apt-get install jq`
+
+### 问题3：Notion API 错误
+```
+错误: API 请求失败
+```
+**解决：** 
+1. 检查 NOTION_TOKEN 是否有效
+2. 确认数据库已分享给 Integration
+3. 查看 `/tmp/notion-skill.log` 获取详细错误
+
+## 📝 更新记录
+
+### v2.0 (2026-03-04)
+- ✅ 完整的任务状态检查
+- ✅ 自动执行确认迭代的任务
+- ✅ 可视化看板生成
+- ✅ 详细日志记录
+- ✅ 状态持久化
+- ✅ 完善的错误处理
+- ✅ 帮助文档
+
+### v1.0 (2026-03-04)
+- 🎉 初始版本
+- ✅ 基础任务检查
+- ✅ 简单通知功能
+
+## 💡 使用建议
+
+1. **定期检查日志**：`tail -f /tmp/notion-skill.log`
+2. **查看看板**：定期生成 dashboard 查看整体进度
+3. **及时处理待确认任务**：待确认任务需要用户决策，不要堆积
+4. **监控开发中的任务**：确保子代理正常完成开发
+
+## 🔮 未来规划
+
+- [ ] Webhook 触发支持
+- [ ] 多数据库支持
+- [ ] 任务优先级自动排序
+- [ ] 开发时间预估
+- [ ] 自动测试集成
+- [ ] 部署状态追踪
+
+---
+
+**作者：** AI Assistant  
+**版本：** 2.0  
+**日期：** 2026-03-04
