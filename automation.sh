@@ -48,6 +48,52 @@ info() {
     echo "$msg" >> "$LOG_FILE"
 }
 
+# P0-2: 日志级别控制
+LOG_LEVEL="${LOG_LEVEL:-INFO}"
+log_debug() {
+    [[ "$LOG_LEVEL" == "DEBUG" ]] && log "[DEBUG] $*"
+}
+
+# P0-2: 日志轮转
+rotate_log() {
+    local max_size=10485760  # 10MB
+    if [[ -f "$LOG_FILE" ]]; then
+        local size=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null || echo 0)
+        if [[ $size -gt $max_size ]]; then
+            mv "$LOG_FILE" "${LOG_FILE}.old"
+            touch "$LOG_FILE"
+            log "日志文件已轮转"
+        fi
+    fi
+}
+
+# P0-1: 错误处理和重试
+MAX_RETRY="${MAX_RETRY:-3}"
+RETRY_DELAY="${RETRY_DELAY:-5}"
+
+# 安全执行函数（带重试）
+safe_execute() {
+    local cmd="$1"
+    local task_name="${2:-unknown}"
+    local max_retry="${3:-$MAX_RETRY}"
+    local retry_delay="${4:-$RETRY_DELAY}"
+    
+    local attempt=1
+    while [[ $attempt -le $max_retry ]]; do
+        log_debug "执行命令 (尝试 $attempt/$max_retry): $cmd"
+        if eval "$cmd" 2>&1; then
+            return 0
+        fi
+        
+        log_warn "命令失败，等待 ${retry_delay}秒后重试..."
+        sleep $retry_delay
+        attempt=$((attempt + 1))
+    done
+    
+    error "命令执行失败，已达到最大重试次数: $cmd"
+    return 1
+}
+
 # 检查依赖
 check_deps() {
     if [ -z "$NOTION_TOKEN" ] || [ -z "$NOTION_DATABASE_ID" ]; then
