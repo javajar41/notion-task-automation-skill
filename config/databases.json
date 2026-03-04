@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "description": "Notion Task Automation - 多数据库配置",
+  "databases": [
+    {
+      "id": "personal",
+      "name": "个人项目",
+      "token": "${NOTION_TOKEN}",
+      "database_id": "${NOTION_DATABASE_ID}",
+      "enabled": true,
+      "check_interval": 30,
+      "priority": 1,
+      "notification": {
+        "channels": ["feishu"],
+        "feishu_target": "user:ou_33e8141e4496f0a674219423723997bf"
+      }
+    }
+  ],
+  "global_settings": {
+    "max_concurrent_checks": 3,
+    "default_check_interval": 30,
+    "batch_notification": true
+  }
+}
