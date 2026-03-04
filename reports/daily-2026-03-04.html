@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>统计报表</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; padding: 40px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 36px; color: #38bdf8; font-weight: bold; }
+        .stat-label { color: #94a3b8; margin-top: 8px; }
+        h1 { color: #38bdf8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #334155; }
+        th { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <h1>📊 Notion Task Automation - 统计报表</h1>
+    <div class="card">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">5</div>
+                <div class="stat-label">总任务</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">2</div>
+                <div class="stat-label">暂停</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">0</div>
+                <div class="stat-label">进行中</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>📋 任务列表</h2>
+        <table>
+            <tr>
+                <th>项目名称</th>
+                <th>状态</th>
+                <th>版本</th>
+            </tr>
+            <tr><td>联通官网界面</td><td>已完成</td><td>V1.1</td></tr>
+            <tr><td>电子物料工具</td><td>已完成</td><td>V1</td></tr>
+            <tr><td>Hello World 页面</td><td>暂停</td><td>V1.1</td></tr>
+            <tr><td>计算器</td><td>暂停</td><td>V1.1</td></tr>
+            <tr><td>天气查询应用</td><td>已完成</td><td>V1</td></tr>
+        </table>
+    </div>
+</body>
+</html>
