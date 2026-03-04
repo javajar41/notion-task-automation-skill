@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "description": "多渠道通知配置",
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "target": "user:ou_33e8141e4496f0a674219423723997bf",
+      "webhook": null,
+      "settings": {
+        "notify_on_error": true,
+        "notify_on_success": true,
+        "notify_on_status_change": true
+      }
+    },
+    "email": {
+      "enabled": false,
+      "smtp": {
+        "host": "smtp.gmail.com",
+        "port": 587,
+        "username": "",
+        "password": ""
+      },
+      "to": [],
+      "settings": {
+        "notify_on_error": true,
+        "notify_on_success": false
+      }
+    },
+    "slack": {
+      "enabled": false,
+      "webhook": "",
+      "channel": "#general",
+      "settings": {
+        "notify_on_error": true,
+        "notify_on_success": true
+      }
+    },
+    "telegram": {
+      "enabled": false,
+      "bot_token": "",
+      "chat_id": "",
+      "settings": {
+        "notify_on_error": true,
+        "notify_on_success": false
+      }
+    }
+  },
+  "notification_rules": {
+    "task_started": ["feishu"],
+    "task_completed": ["feishu"],
+    "task_failed": ["feishu", "email"],
+    "daily_summary": ["feishu"]
+  }
+}
