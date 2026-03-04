@@ -252,7 +252,7 @@ $confirmed_list
     report="$report
 
 ---
-⏰ 下次检查: $(date -d '+5 minutes' '+%H:%M')
+⏰ 下次检查: $(date -d '+30 minutes' '+%H:%M') (每30分钟)
 📁 完整日志: \`tail -f /tmp/notion-skill.log\`"
     
     send_notification "$report"
