@@ -113,10 +113,33 @@ GitHub Pages部署
 ```bash
 # Notion API配置
 NOTION_TOKEN=ntn_xxxxxxxxxxxxxxxxxxxx
-NOTION_DATABASE_ID=3188333bb51480c99f35ff6c05b1b46a
+NOTION_DATABASE_ID=your_database_id
 
-# GitHub配置（内嵌在脚本中）
+# GitHub配置（用于自动部署）
 GITHUB_TOKEN=github_pat_xxxxxxxxxxxx
+```
+
+### 快速安装
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/javajar41/notion-task-automation-skill.git
+cd notion-task-automation-skill
+
+# 2. 创建环境变量文件
+cat > .env << EOF
+NOTION_TOKEN=your_notion_token
+NOTION_DATABASE_ID=your_database_id
+GITHUB_TOKEN=your_github_token
+EOF
+
+# 3. 配置定时任务
+crontab -e
+# 添加: */30 * * * * /path/to/automation.sh full
+
+# 4. 运行测试
+./automation.sh status
+./automation.sh check
 ```
 
 ### 定时任务（Crontab）
